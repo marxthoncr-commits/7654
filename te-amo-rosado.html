@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Te Amo Infinito</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #f8e1e1, #ffe6f0, #fcd5ce);
+      background-size: 400% 400%;
+      animation: bgAnimation 12s ease infinite;
+      color: #d50000;
+    }
+
+    @keyframes bgAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .te-amo {
+      position: absolute;
+      font-size: 26px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Explosión */
+    .explode {
+      animation: explode 2.5s forwards;
+    }
+
+    @keyframes explode {
+      0% { opacity: 1; transform: translate(0, 0) scale(1); }
+      100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(0.5); }
+    }
+
+    /* Flotando como globito */
+    .float {
+      animation: floatUp 4s forwards;
+    }
+
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-250px) scale(1.2); }
+    }
+
+    .special-message {
+      font-size: 34px;
+      color: #c2185b;
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulse 1.5s infinite;
+    }
+
+    .special-message .heart {
+      color: #ff69b4; /* Corazones rosados */
+      font-size: 40px;
+    }
+
+    @keyframes pulse {
+      0% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.2); }
+      100% { transform: translate(-50%, -50%) scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="special-message">
+    Isa te amuuuu muchooo con todo mi corazón,<br>
+    eres la mejor persona del mundo <span class="heart">💗</span>
+  </div>
+
+  <script>
+    function createTeAmo(x, y, message, type="explode") {
+      const teAmo = document.createElement('div');
+      teAmo.className = 'te-amo ' + type;
+      teAmo.innerHTML = message;
+      teAmo.style.left = x + 'px';
+      teAmo.style.top = y + 'px';
+
+      if (type === "explode") {
+        // Ángulo y distancia aleatoria
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = Math.random() * 200 + 100;
+        teAmo.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
+        teAmo.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
+      }
+
+      document.body.appendChild(teAmo);
+
+      // Eliminar después de la animación
+      setTimeout(() => teAmo.remove(), type === "explode" ? 2500 : 4000);
+    }
+
+    function addTeAmo(event) {
+      const numTeAmos = 12;
+      for (let i = 0; i < numTeAmos; i++) {
+        const type = Math.random() > 0.5 ? "explode" : "float"; // Mitad explotan, mitad flotan
+        createTeAmo(event.clientX, event.clientY, 'Te amo 💗', type);
+      }
+    }
+
+    // Mensajes iniciales repartidos en pantalla
+    for (let i = 0; i < 50; i++) {
+      const type = Math.random() > 0.7 ? "float" : "explode";
+      createTeAmo(Math.random() * window.innerWidth, Math.random() * window.innerHeight, 'Te amo 💗', type);
+    }
+
+    // Evento al hacer clic
+    document.body.addEventListener('click', addTeAmo);
+  </script>
+</body>
+</html>
